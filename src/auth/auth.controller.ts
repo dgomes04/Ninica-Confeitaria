@@ -14,6 +14,7 @@ import { AuthRequest } from './models/AuthRequest';
 @Controller()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
   @IsPublic()
   @Post('login')
   @HttpCode(HttpStatus.OK)
