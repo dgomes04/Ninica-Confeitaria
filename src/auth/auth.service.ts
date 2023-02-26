@@ -5,6 +5,7 @@ import { User } from 'src/user/entities/user.entity';
 import { UserPayload } from './models/UserPayload';
 import { JwtService } from '@nestjs/jwt';
 import { UserToken } from './models/UserToken';
+import { IsPublic } from './decorators/is-public.decorator';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +13,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
-
+  @IsPublic()
   login(user: User): UserToken {
     const payload: UserPayload = {
       sub: user.id,
