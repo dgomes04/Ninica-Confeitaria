@@ -21,6 +21,7 @@ export class UserService {
     return {
       ...createdUser,
       password: undefined,
+      address: createdUser.Address,
     };
   }
 

@@ -23,5 +23,5 @@ export class CreateUserDto extends User {
   name: string;
 
   @IsString()
-  address: string;
+  Address: string;
 }
