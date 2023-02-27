@@ -3,4 +3,5 @@ export interface UserFromJwt {
   email: string;
   name: string;
   address: string;
+  admin?: boolean;
 }

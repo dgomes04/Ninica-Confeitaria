@@ -1,6 +1,8 @@
 import { User } from '../entities/user.entity';
 import {
+  IsBoolean,
   IsEmail,
+  IsOptional,
   IsString,
   Matches,
   MaxLength,
@@ -23,5 +25,8 @@ export class CreateUserDto extends User {
   name: string;
 
   @IsString()
-  Address: string;
+  address: string;
+
+  @IsOptional()
+  admin?: boolean;
 }

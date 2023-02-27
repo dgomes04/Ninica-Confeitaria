@@ -6,18 +6,38 @@ import {
   Param,
   Patch,
   Post,
+  Req,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductService } from './product.service';
 
-@Controller('produto')
+@Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productService.create(createProductDto);
+  async create(
+    @Body() createProductDto: CreateProductDto,
+    @Req() req,
+    @Res() res: Response,
+  ) {
+    try {
+      const createdProduct = await this.productService.create(
+        createProductDto,
+        req,
+      );
+      console.log(createdProduct);
+
+      return res.status(201).send(createdProduct);
+    } catch (error) {
+      return res.status(401).send({
+        StatusCode: 401,
+        Message: 'Only Administrators are able to access this endpoint',
+      });
+    }
   }
 
   @Get()

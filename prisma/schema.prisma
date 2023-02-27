@@ -11,12 +11,14 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  email    String @unique
-  password String
-  name     String
-  Address  String
-  Cart     Cart[]
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  address   String
+  admin     Boolean  @default(false)
+  createdAt DateTime
+  Cart      Cart[]
 }
 
 model Produtos {
@@ -24,7 +26,7 @@ model Produtos {
   name        String
   price       Decimal
   description String
-  options     Boolean
+  options     String  @default("")
   Cart        Cart[]
 
   @@map("Products")

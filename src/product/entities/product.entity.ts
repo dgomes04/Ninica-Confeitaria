@@ -1,7 +1,9 @@
-export class Product {
-  id: string;
+import { Decimal } from '@prisma/client/runtime';
+
+export class Produtos {
+  id: number;
   name: string;
-  price: number;
+  price: Decimal;
   description: string;
-  options: boolean;
+  options?: string;
 }

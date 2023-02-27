@@ -11,6 +11,6 @@ export class CreateProductDto {
   @IsString()
   description: string;
 
-  @IsBoolean()
-  options: boolean;
+  @IsString()
+  options?: string;
 }
