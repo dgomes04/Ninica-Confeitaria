@@ -15,4 +15,25 @@ model User {
   email    String @unique
   password String
   name     String
+  Address  String
+  Cart     Cart[]
+}
+
+model Produtos {
+  id          String  @id @default(uuid())
+  name        String
+  price       Decimal
+  description String
+  options     Boolean
+  Cart        Cart[]
+
+  @@map("Products")
+}
+
+model Cart {
+  id         String   @id @default(uuid())
+  User       User     @relation(fields: [userId], references: [id])
+  userId     String
+  Produtos   Produtos @relation(fields: [produtosId], references: [id])
+  produtosId String
 }
