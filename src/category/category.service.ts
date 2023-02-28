@@ -71,10 +71,14 @@ export class CategoryService {
 
   async remove(id: number, req: AuthRequest) {
     if (req.user.admin) {
-      const deletedCategory = await this.prismaService.categories.delete({
-        where: { id },
-      });
-      return deletedCategory;
+      const ExisteCategoria =
+        await this.prismaService.categories.findFirstOrThrow({ where: { id } });
+      if (ExisteCategoria) {
+        const deletedCategory = await this.prismaService.categories.delete({
+          where: { id },
+        });
+        return deletedCategory;
+      }
     }
     throw new Error('Only Administrators are able to access this endpoint');
   }

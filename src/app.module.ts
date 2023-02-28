@@ -9,6 +9,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailService } from './email/email.service';
 import { EmailModule } from './email/email.module';
 import { CategoryModule } from './category/category.module';
+import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CategoryModule } from './category/category.module';
     }),
     EmailModule,
     CategoryModule,
+    CartModule,
   ],
   controllers: [],
   providers: [
