@@ -22,19 +22,40 @@ export class ProductService {
     throw new Error();
   }
 
-  findAll() {
-    return `This action returns all product`;
+  async findAll() {
+    return await this.prisma.products.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: number) {
+    console.log(id);
+    return await this.prisma.products.findFirstOrThrow({
+      where: { id },
+    });
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: number, updatedProduct: UpdateProductDto, req: AuthRequest) {
+    if (req.user.admin) {
+      return await this.prisma.products.update({
+        data: {
+          active: updatedProduct?.active,
+          description: updatedProduct?.description,
+          name: updatedProduct?.name,
+          options: updatedProduct?.options,
+          price: updatedProduct?.price,
+          categoryId: updatedProduct?.categoryId,
+        },
+        where: {
+          id,
+        },
+      });
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async remove(id: number, req: AuthRequest) {
+    if (req.user.admin) {
+      return await this.prisma.products.delete({
+        where: { id },
+      });
+    }
   }
 }

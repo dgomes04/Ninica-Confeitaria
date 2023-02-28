@@ -36,15 +36,15 @@ model Products {
   active      Boolean    @default(false)
   options     String     @default("")
   Cart        Carts[]
-  Categoria   Categories @relation(fields: [categoriaId], references: [id])
-  categoriaId Int        @default(-1)
+  Categoria   Categories @relation(fields: [categoryId], references: [id])
+  categoryId  Int        @default(-1)
 
   @@map("Product")
 }
 
 model Categories {
   id       Int        @id @default(autoincrement())
-  typo     String
+  type     String
   active   Boolean    @default(false)
   Produtos Products[]
 

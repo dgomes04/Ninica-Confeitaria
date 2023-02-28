@@ -6,10 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { IsPublic } from 'src/auth/decorators/is-public.decorator';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductService } from './product.service';
@@ -39,23 +41,43 @@ export class ProductController {
     }
   }
 
+  @IsPublic()
   @Get()
-  findAll() {
-    return this.productService.findAll();
+  async findAll() {
+    return await this.productService.findAll();
   }
 
+  @IsPublic()
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.productService.findOne(id);
-  }
+  async findOne(@Param('id') id: number, @Res() res: Response) {
+    try {
+      const product = await this.productService.findOne(id);
 
+      res.status(200).send({ product });
+    } catch (error) {
+      res.status(404).send({
+        StatusCode: 404,
+        Message: error.message,
+      });
+    }
+  }
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productService.update(+id, updateProductDto);
+  async update(
+    @Param('id') id: number,
+    @Body() updateProductDto: UpdateProductDto,
+    @Req() req,
+  ) {
+    return {
+      UpdatedProduct: await this.productService.update(
+        id,
+        updateProductDto,
+        req,
+      ),
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productService.remove(+id);
+  async remove(@Param('id') id: number, @Req() req) {
+    return { DeletedProduct: await this.productService.remove(id, req) };
   }
 }

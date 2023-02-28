@@ -1,5 +1,5 @@
 import { Decimal } from '@prisma/client/runtime';
-import { IsBoolean, IsDecimal, IsString } from 'class-validator';
+import { IsBoolean, IsDecimal, IsOptional, IsString } from 'class-validator';
 
 export class CreateProductDto {
   @IsString()
@@ -12,5 +12,10 @@ export class CreateProductDto {
   description: string;
 
   @IsString()
+  @IsOptional()
   options?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  active?: boolean;
 }
