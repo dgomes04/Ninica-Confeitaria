@@ -29,15 +29,15 @@ model Users {
 }
 
 model Products {
-  id          Int        @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   name        String
   price       Decimal
   description String
-  active      Boolean    @default(false)
-  options     String     @default("")
+  active      Boolean     @default(false)
+  options     String      @default("")
   Cart        Carts[]
-  Categoria   Categories @relation(fields: [categoryId], references: [id])
-  categoryId  Int        @default(-1)
+  Categoria   Categories? @relation(fields: [categoriaId], references: [id])
+  categoriaId Int?
 
   @@map("Product")
 }

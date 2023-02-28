@@ -14,12 +14,10 @@ export class ProductService {
       const data: Prisma.ProductsCreateInput = {
         ...produto,
       };
-
       const createdProduct = await this.prisma.products.create({ data });
       return createdProduct;
     }
-
-    throw new Error();
+    throw new Error('Only Administrators are able to access this endpoint');
   }
 
   async findAll() {
@@ -35,27 +33,33 @@ export class ProductService {
 
   async update(id: number, updatedProduct: UpdateProductDto, req: AuthRequest) {
     if (req.user.admin) {
-      return await this.prisma.products.update({
-        data: {
-          active: updatedProduct?.active,
-          description: updatedProduct?.description,
-          name: updatedProduct?.name,
-          options: updatedProduct?.options,
-          price: updatedProduct?.price,
-          categoryId: updatedProduct?.categoryId,
-        },
-        where: {
-          id,
-        },
+      const ExisteProduto = await this.prisma.products.findFirstOrThrow({
+        where: { id },
       });
+      if (ExisteProduto) {
+        const data = updatedProduct;
+        return await this.prisma.products.update({
+          data,
+          where: {
+            id,
+          },
+        });
+      }
     }
+    throw new Error('Only Administrators are able to access this endpoint');
   }
 
   async remove(id: number, req: AuthRequest) {
     if (req.user.admin) {
-      return await this.prisma.products.delete({
+      const ExisteProduto = await this.prisma.products.findFirstOrThrow({
         where: { id },
       });
+      if (ExisteProduto) {
+        return await this.prisma.products.delete({
+          where: { id },
+        });
+      }
     }
+    throw new Error('Only Administrators are able to access this endpoint');
   }
 }

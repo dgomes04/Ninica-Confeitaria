@@ -6,4 +6,5 @@ export class Produtos {
   price: Decimal;
   description: string;
   options?: string;
+  categoriaId: number;
 }

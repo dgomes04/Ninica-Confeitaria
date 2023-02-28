@@ -16,7 +16,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductService } from './product.service';
 
-@Controller('product')
+@Controller('produto')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
@@ -32,11 +32,11 @@ export class ProductController {
         req,
       );
 
-      return res.status(201).send(createdProduct);
+      res.status(201).send(createdProduct);
     } catch (error) {
-      return res.status(401).send({
+      res.status(401).send({
         StatusCode: 401,
-        Message: 'Only Administrators are able to access this endpoint',
+        Message: error.message,
       });
     }
   }
@@ -66,18 +66,33 @@ export class ProductController {
     @Param('id') id: number,
     @Body() updateProductDto: UpdateProductDto,
     @Req() req,
+    @Res() res,
   ) {
-    return {
-      UpdatedProduct: await this.productService.update(
+    try {
+      const updatedProduct = await this.productService.update(
         id,
         updateProductDto,
         req,
-      ),
-    };
+      );
+      res.status(201).send({ updatedProduct });
+    } catch (error) {
+      res.status(401).send({
+        StatusCode: 401,
+        Message: error.message,
+      });
+    }
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number, @Req() req) {
-    return { DeletedProduct: await this.productService.remove(id, req) };
+  async remove(@Param('id') id: number, @Req() req, @Res() res) {
+    try {
+      const deletedProduct = await this.productService.remove(id, req);
+      res.status(200).send({ deletedProduct });
+    } catch (error) {
+      res.status(401).send({
+        StatusCode: 401,
+        Message: error.message,
+      });
+    }
   }
 }

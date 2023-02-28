@@ -30,5 +30,5 @@ export class UpdateProductDto {
 
   @IsNumber()
   @IsOptional()
-  categoryId?: number;
+  categoriaId?: number;
 }
