@@ -1,18 +1,19 @@
-import { User } from '../entities/user.entity';
 import {
-  IsBoolean,
   IsEmail,
-  IsOptional,
+  IsNotEmpty,
   IsString,
   Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { User } from '../entities/user.entity';
 
 export class CreateUserDto extends User {
+  @IsNotEmpty()
   @IsEmail()
   email: string;
 
+  @IsNotEmpty()
   @IsString()
   @MinLength(4)
   @MaxLength(20)
@@ -21,12 +22,15 @@ export class CreateUserDto extends User {
   })
   password: string;
 
+  @IsNotEmpty()
   @IsString()
   name: string;
 
+  @IsNotEmpty()
   @IsString()
   address: string;
 
-  @IsOptional()
-  admin?: boolean;
+  @IsNotEmpty()
+  @IsString()
+  tel: string;
 }

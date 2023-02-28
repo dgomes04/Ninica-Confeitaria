@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { AuthRequest } from 'src/auth/models/AuthRequest';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -10,15 +11,11 @@ export class ProductService {
   //
   async create(produto: CreateProductDto, req: AuthRequest): Promise<Produtos> {
     if (req.user.admin) {
-      const createdProduct = await this.prisma.produtos.create({
-        data: {
-          description: produto.description,
-          name: produto.name,
-          options: produto?.options,
-          price: produto.price,
-        },
-      });
-      console.log(createdProduct);
+      const data: Prisma.ProductsCreateInput = {
+        ...produto,
+      };
+
+      const createdProduct = await this.prisma.products.create({ data });
       return createdProduct;
     }
 

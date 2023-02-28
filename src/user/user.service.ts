@@ -10,17 +10,22 @@ export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   async pegarTudo() {
-    return this.prisma.user.findMany();
+    return this.prisma.users.findMany();
   }
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const data: Prisma.UserCreateInput = {
+    const alreadyExists = await this.findByEmail(createUserDto.email);
+
+    if (alreadyExists) {
+      throw new Error('This user already exists');
+    }
+    const data: Prisma.UsersCreateInput = {
       id: uuidV4(),
       ...createUserDto,
       createdAt: new Date(),
       password: await bcrypt.hash(createUserDto.password, 10),
     };
 
-    const createdUser = await this.prisma.user.create({ data });
+    const createdUser = await this.prisma.users.create({ data });
 
     return {
       ...createdUser,
@@ -30,6 +35,6 @@ export class UserService {
   }
 
   findByEmail(email: string) {
-    return this.prisma.user.findUnique({ where: { email } });
+    return this.prisma.users.findUnique({ where: { email } });
   }
 }

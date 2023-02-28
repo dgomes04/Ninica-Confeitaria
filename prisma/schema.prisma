@@ -10,32 +10,65 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
+model Users {
+  id        String    @id @default(uuid())
+  email     String    @unique
   password  String
   name      String
   address   String
-  admin     Boolean  @default(false)
+  tel       String    @unique
+  confirmed Boolean   @default(false)
+  deleted   Boolean   @default(false)
+  admin     Boolean   @default(false)
   createdAt DateTime
-  Cart      Cart[]
+  editedAt  DateTime?
+  deletedAt DateTime?
+  Cart      Carts[]
+
+  @@map("User")
 }
 
-model Produtos {
-  id          Int     @id @default(autoincrement())
+model Products {
+  id          Int        @id @default(autoincrement())
   name        String
   price       Decimal
   description String
-  options     String  @default("")
-  Cart        Cart[]
+  active      Boolean    @default(false)
+  options     String     @default("")
+  Cart        Carts[]
+  Categoria   Categories @relation(fields: [categoriaId], references: [id])
+  categoriaId Int        @default(-1)
 
-  @@map("Products")
+  @@map("Product")
 }
 
-model Cart {
-  id         String   @id @default(uuid())
-  User       User     @relation(fields: [userId], references: [id])
-  userId     String
-  Produtos   Produtos @relation(fields: [produtosId], references: [id])
-  produtosId Int
+model Categories {
+  id       Int        @id @default(autoincrement())
+  typo     String
+  active   Boolean    @default(false)
+  Produtos Products[]
+
+  @@map("Category")
+}
+
+model Carts {
+  id           String   @id @default(uuid())
+  User         Users    @relation(fields: [userId], references: [id])
+  userId       String
+  Produtos     Products @relation(fields: [productsId], references: [id])
+  productsId   Int
+  payment_type String
+  createdAt    DateTime
+  editedAt     DateTime
+  deletedAt    DateTime
+
+  @@map("Cart")
+}
+
+model Payments {
+  id String @id @default(uuid())
+
+  description String
+
+  @@map("Payment")
 }

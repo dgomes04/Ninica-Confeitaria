@@ -19,6 +19,8 @@ export class AuthService {
       sub: user.id,
       email: user.email,
       name: user.name,
+      confirmed: user.confirmed,
+      tel: user.tel,
       address: user.address,
       admin: user.admin,
     };

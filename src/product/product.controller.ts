@@ -29,7 +29,6 @@ export class ProductController {
         createProductDto,
         req,
       );
-      console.log(createdProduct);
 
       return res.status(201).send(createdProduct);
     } catch (error) {
