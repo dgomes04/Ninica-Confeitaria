@@ -29,15 +29,17 @@ model Users {
 }
 
 model Products {
-  id          Int         @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
   price       Decimal
   description String
-  active      Boolean     @default(false)
-  options     String      @default("")
-  Carts       Carts[]
+  image       String?
+  active      Boolean @default(false)
+  options     String  @default("")
+
   Categoria   Categories? @relation(fields: [categoriaId], references: [id])
   categoriaId Int?
+  carts       Carts[]
 
   @@map("Product")
 }
@@ -52,15 +54,16 @@ model Categories {
 }
 
 model Carts {
-  id           String     @id @default(uuid())
-  User         Users      @relation(fields: [userId], references: [id])
-  userId       String
-  Products     Products[]
-  payment_type String
+  id   String @id @default(uuid())
+  user Users? @relation(fields: [userId], references: [id])
+
+  payment_type String?
   finished     Boolean    @default(false)
   createdAt    DateTime
   editedAt     DateTime?
   deletedAt    DateTime?
+  userId       String
+  products     Products[]
 
   @@map("Cart")
 }

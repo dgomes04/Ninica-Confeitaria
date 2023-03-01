@@ -1,5 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Res,
+} from '@nestjs/common';
 import { CartService } from './cart.service';
+import { AddCartDto } from './dto/add-cart.dto';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 
@@ -8,8 +18,30 @@ export class CartController {
   constructor(private readonly cartService: CartService) {}
 
   @Post()
-  create(@Body() createCartDto: CreateCartDto) {
-    return this.cartService.create(createCartDto);
+  async create(@Body() createCartDto: CreateCartDto, @Res() res) {
+    try {
+      const createdCart = await this.cartService.create(createCartDto);
+
+      res.status(201).send({ createdCart });
+    } catch (error) {
+      res.status(401).send({
+        StatusCode: 401,
+        Message: error.message,
+      });
+    }
+  }
+  @Post('add')
+  async add(@Body() { id, cartId }: AddCartDto, @Res() res) {
+    try {
+      const AddedProduct = await this.cartService.adicionarProduto(id, cartId);
+      res.status(200).send({ AddedProduct });
+    } catch (error) {
+      console.log(error);
+      res.status(401).send({
+        StatusCode: 401,
+        Message: error.message,
+      });
+    }
   }
 
   @Get()

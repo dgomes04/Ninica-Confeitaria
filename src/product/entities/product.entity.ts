@@ -1,6 +1,6 @@
 import { Decimal } from '@prisma/client/runtime';
 
-export class Produtos {
+export class Product {
   id: number;
   name: string;
   price: Decimal;

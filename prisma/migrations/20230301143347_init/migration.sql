@@ -1,5 +1,17 @@
+/*
+  Warnings:
+
+  - You are about to drop the `productoncart` table. If the table is not empty, all the data it contains will be lost.
+
+*/
 -- DropForeignKey
-ALTER TABLE `product` DROP FOREIGN KEY `Product_cartsId_fkey`;
+ALTER TABLE `productoncart` DROP FOREIGN KEY `ProductOnCart_cartsId_fkey`;
+
+-- DropForeignKey
+ALTER TABLE `productoncart` DROP FOREIGN KEY `ProductOnCart_productsId_fkey`;
+
+-- DropTable
+DROP TABLE `productoncart`;
 
 -- CreateTable
 CREATE TABLE `_CartsToProducts` (

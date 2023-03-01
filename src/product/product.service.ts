@@ -4,12 +4,12 @@ import { AuthRequest } from 'src/auth/models/AuthRequest';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { Produtos } from './entities/product.entity';
+import { Product } from './entities/product.entity';
 @Injectable()
 export class ProductService {
   constructor(private readonly prisma: PrismaService) {}
   //
-  async create(produto: CreateProductDto, req: AuthRequest): Promise<Produtos> {
+  async create(produto: CreateProductDto, req: AuthRequest): Promise<Product> {
     if (req.user.admin) {
       const data: Prisma.ProductsCreateInput = {
         ...produto,
