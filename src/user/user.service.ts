@@ -1,9 +1,7 @@
-import { MailerService } from '@nestjs-modules/mailer/dist';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { EmailService } from 'src/email/email.service';
-import { v4 as uuidV4 } from 'uuid';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { DeleteUserDto } from './dto/delete-user.dto';
@@ -27,7 +25,6 @@ export class UserService {
       throw new Error('This user already exists');
     }
     const data: Prisma.UsersCreateInput = {
-      id: uuidV4(),
       ...createUserDto,
       createdAt: new Date(),
       password: await bcrypt.hash(createUserDto.password, 10),

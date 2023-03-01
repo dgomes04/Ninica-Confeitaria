@@ -28,5 +28,6 @@ export class CreateProductDto {
 
   @IsNumber()
   @IsNotEmpty()
-  categoriaId: number;
+  @IsOptional()
+  categoriaId?: number;
 }

@@ -35,7 +35,7 @@ model Products {
   description String
   active      Boolean     @default(false)
   options     String      @default("")
-  Cart        Carts[]
+  Carts       Carts[]
   Categoria   Categories? @relation(fields: [categoriaId], references: [id])
   categoriaId Int?
 
@@ -52,15 +52,15 @@ model Categories {
 }
 
 model Carts {
-  id           String   @id @default(uuid())
-  User         Users    @relation(fields: [userId], references: [id])
+  id           String     @id @default(uuid())
+  User         Users      @relation(fields: [userId], references: [id])
   userId       String
-  Produtos     Products @relation(fields: [productsId], references: [id])
-  productsId   Int
+  Products     Products[]
   payment_type String
+  finished     Boolean    @default(false)
   createdAt    DateTime
-  editedAt     DateTime
-  deletedAt    DateTime
+  editedAt     DateTime?
+  deletedAt    DateTime?
 
   @@map("Cart")
 }
