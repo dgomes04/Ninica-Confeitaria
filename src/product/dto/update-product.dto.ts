@@ -24,10 +24,6 @@ export class UpdateProductDto {
   @IsOptional()
   options?: string;
 
-  @IsBoolean()
-  @IsOptional()
-  active?: boolean;
-
   @IsNumber()
   @IsOptional()
   categoriaId?: number;

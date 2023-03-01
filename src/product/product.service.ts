@@ -55,8 +55,9 @@ export class ProductService {
         where: { id },
       });
       if (ExisteProduto) {
-        return await this.prisma.products.delete({
+        return await this.prisma.products.update({
           where: { id },
+          data: { active: false },
         });
       }
     }
