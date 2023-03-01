@@ -59,6 +59,8 @@ model Carts {
 
   payment_type String?
   finished     Boolean    @default(false)
+  canceled     Boolean    @default(false)
+  payed        Boolean    @default(false)
   createdAt    DateTime
   editedAt     DateTime?
   deletedAt    DateTime?

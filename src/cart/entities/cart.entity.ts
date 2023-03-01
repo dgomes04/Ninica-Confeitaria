@@ -5,4 +5,6 @@ export class Cart {
   userId: string;
   products: ProductsOnCart[];
   finished: boolean;
+  payed: boolean;
+  canceled: boolean;
 }

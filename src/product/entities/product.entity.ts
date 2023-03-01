@@ -7,4 +7,5 @@ export class Product {
   description: string;
   options?: string;
   categoriaId: number;
+  active: boolean;
 }

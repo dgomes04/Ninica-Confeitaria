@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   Res,
+  Req,
 } from '@nestjs/common';
+import { AuthRequest } from 'src/auth/models/AuthRequest';
 import { CartService } from './cart.service';
 import { AddCartDto } from './dto/add-cart.dto';
 import { CreateCartDto } from './dto/create-cart.dto';
-import { UpdateCartDto } from './dto/update-cart.dto';
+import { RemoveCartDto } from './dto/remove-cart.dto';
 
 @Controller('cart')
 export class CartController {
@@ -33,10 +35,12 @@ export class CartController {
   @Post('add')
   async add(@Body() { id, cartId }: AddCartDto, @Res() res) {
     try {
-      const AddedProduct = await this.cartService.adicionarProduto(id, cartId);
+      const AddedProduct = await this.cartService.adicionarProdutoPorId(
+        id,
+        cartId,
+      );
       res.status(200).send({ AddedProduct });
     } catch (error) {
-      console.log(error);
       res.status(401).send({
         StatusCode: 401,
         Message: error.message,
@@ -45,22 +49,59 @@ export class CartController {
   }
 
   @Get()
-  findAll() {
-    return this.cartService.findAll();
+  async findAll(@Res() res, @Req() req: AuthRequest) {
+    try {
+      const compras = await this.cartService.findAll(req.user.id);
+
+      res.status(200).send({ compras });
+    } catch (error) {
+      res.status(401).send({
+        StatusCode: 401,
+        Message: error.message,
+      });
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cartService.findOne(+id);
+  async findOne(@Param('id') id: string, @Res() res) {
+    try {
+      const compras = await this.cartService.findOne(id);
+
+      res.status(200).send({ compras });
+    } catch (error) {
+      res.status(401).send({
+        StatusCode: 401,
+        Message: error.message,
+      });
+    }
+  }
+  @Get('/current/:id')
+  async findCurrentCart(@Param('id') id: string, @Res() res) {
+    try {
+      const currentCart = await this.cartService.findCurrentCart(id);
+
+      res.status(200).send({ currentCart });
+    } catch (error) {
+      res.status(401).send({
+        StatusCode: 401,
+        Message: error.message,
+      });
+    }
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCartDto: UpdateCartDto) {
-    return this.cartService.update(+id, updateCartDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cartService.remove(+id);
+  @Patch('remove')
+  async remover(@Body() updateCartDto: RemoveCartDto, @Res() res) {
+    try {
+      const removedProduct = await this.cartService.removeProduct(
+        updateCartDto,
+      );
+      res.status(200).send({ removedProduct });
+    } catch (error) {
+      res.status(401).send({
+        StatusCode: 401,
+        Message: error.message,
+      });
+    }
+    return;
   }
 }
